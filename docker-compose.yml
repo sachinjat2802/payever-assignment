@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  invoice-service:
+    build:
+      context: ./invoice-creation-service
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - RABBITMQ_URL=amqps://msactcbs:T_PHvEtd5u941rLQJIHnokEHJL_dBVh6@puffin.rmq2.cloudamqp.com/msactcbs
+      - SALES_REPORT_QUEUE=sales_summary_queue
+      - MONGODB_URI=mongodb+srv://sachin:T1mXxni3yXjE76UC@cluster0.mwsbpek.mongodb.net/invoice-db?retryWrites=true&w=majority
+
+  consumer-service:
+    build:
+      context: ./consumer-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - RABBITMQ_URL=amqps://msactcbs:T_PHvEtd5u941rLQJIHnokEHJL_dBVh6@puffin.rmq2.cloudamqp.com/msactcbs
+      - SALES_REPORT_QUEUE=sales_summary_queue
+   
+   
+
